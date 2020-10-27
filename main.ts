@@ -13,8 +13,7 @@ if (isNaN(port)) {
 interface ServerRecord {
   game: string
   name: string,
-  host: string,
-  port: string,
+  uri: string
   lastUpdated: Date,
   details?: any
 }
@@ -26,7 +25,7 @@ class ServerStorage {
   servers: Map<string, ServerRecord> = new Map();
 
   addServer(record: Omit<ServerRecord, 'lastUpdated'>) {
-    this.servers.set(`${record.host}:${record.port}`, { ...record, lastUpdated: new Date() });
+    this.servers.set(`${record.uri}`, { ...record, lastUpdated: new Date() });
   }
 
   getServers(game?: string) {
@@ -64,8 +63,7 @@ router
   .post('/', async context => {
     const body: Omit<ServerRecord, 'lastUpdated'> = await context.request.body({ type: 'json' }).value;
     if(typeof body.game !== 'string') context.throw(401, 'Expected `game` field to be string.')
-    if(typeof body.host !== 'string') context.throw(401, 'Expected `host` field to be string.')
-    if(typeof body.port !== 'string') context.throw(401, 'Expected `port` field to be string.')
+    if(typeof body.uri !== 'string') context.throw(401, 'Expected `uri` field to be string.')
     if(typeof body.name !== 'string') context.throw(401, 'Expected `name` field to be string.')
 
     storage.addServer(body);

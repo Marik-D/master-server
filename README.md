@@ -12,8 +12,7 @@ Deployed at https://my-master-server.herokuapp.com/
 interface ServerRecord {
   game: string
   name: string,
-  host: string,
-  port: string,
+  uri: string,
   lastUpdated: Date,
   details?: any
 }
